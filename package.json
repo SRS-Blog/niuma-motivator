@@ -1,0 +1,33 @@
+{
+  "name": "niuma-motivator",
+  "productName": "牛马鼓励器",
+  "version": "1.0.0",
+  "description": "一个干净的桌面悬浮窗：实时显示你今天已经赚了多少钱，一秒一秒往上涨",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "capture": "electron . --capture",
+    "test": "node test/calc.test.js && node test/themes.test.js && node test/config.test.js",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.niuma.motivator",
+    "productName": "牛马鼓励器",
+    "files": [
+      "main.js",
+      "config-core.js",
+      "preload.js",
+      "assets/**",
+      "renderer/**"
+    ],
+    "win": {
+      "target": "portable"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.3.0",
+    "electron-builder": "^26.18.0"
+  }
+}

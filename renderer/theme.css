@@ -1,0 +1,35 @@
+/* 牛马鼓励器 —— 共享设计变量（:root 为暗夜金默认值，运行时由 themes.js 覆写） */
+:root {
+  --accent-1: #ffd76a;
+  --accent-2: #f5a524;
+  --bg: #0f1118;
+  --num: #ffffff;
+  --text: #eef1f7;
+  --text-dim: rgba(238, 241, 247, 0.58);
+  --text-faint: rgba(238, 241, 247, 0.38);
+  --line: rgba(255, 255, 255, 0.08);
+  --track: rgba(255, 255, 255, 0.09);
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-strong: rgba(255, 255, 255, 0.10);
+  --card-border: rgba(255, 255, 255, 0.09);
+  --veil: rgba(255, 255, 255, 0.05);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  --ok: #7ce8a8;
+  --danger: #ffb3b3;
+  --warn: #ffb86b;
+  --green-1: #7ce8a8;
+  --green-2: #2fb96a;
+  --font: "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select { font-family: inherit; }

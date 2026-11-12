@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:">
+  <title>牛马鼓励器 · 设置</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <header class="s-head">
+    <div class="s-title">🐮🐴 牛马鼓励器 <span class="s-sub">设置</span></div>
+    <button class="icon-btn" id="btnClose" title="关闭">✕</button>
+  </header>
+
+  <main class="s-body">
+    <section class="sec">
+      <h2>💰 工资与工时</h2>
+      <div class="row">
+        <label for="monthly">月薪（元）</label>
+        <div class="ctl"><input id="monthly" type="number" min="0" max="10000000" step="100" autocomplete="off"></div>
+      </div>
+      <div class="row">
+        <label>每月工作日</label>
+        <div class="ctl"><span class="val" id="daysPerMonth"></span></div>
+      </div>
+      <div class="row">
+        <label>上下班时间</label>
+        <div class="ctl">
+          <input id="workStart" type="time">
+          <span class="tilde">–</span>
+          <input id="workEnd" type="time">
+        </div>
+      </div>
+      <div class="row">
+        <label for="lunchEnabled">午休（不计薪）</label>
+        <div class="ctl"><label class="switch"><input id="lunchEnabled" type="checkbox"><span></span></label></div>
+      </div>
+      <div class="row">
+        <label></label>
+        <div class="ctl">
+          <input id="lunchStart" type="time">
+          <span class="tilde">–</span>
+          <input id="lunchEnd" type="time">
+        </div>
+      </div>
+      <div class="row">
+        <label>工作日</label>
+        <div class="ctl"><div class="wd-group" id="wdGroup"></div></div>
+      </div>
+      <div class="row">
+        <label for="payday">发薪日</label>
+        <div class="ctl"><select id="payday"></select></div>
+      </div>
+      <div class="hint" id="workHint"></div>
+    </section>
+
+    <section class="sec">
+      <h2>⏱ 实时换算</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="sv" id="sSec">¥0</span><span class="sl">每秒</span></div>
+        <div class="stat"><span class="sv" id="sHour">¥0</span><span class="sl">每小时</span></div>
+        <div class="stat"><span class="sv" id="sDay">¥0</span><span class="sl">每天</span></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>🎯 小目标</h2>
+      <div id="wishList"></div>
+      <button class="btn add" id="btnAddWish">＋ 添加小目标</button>
+    </section>
+
+    <section class="sec">
+      <h2>🎨 换肤与透明度</h2>
+      <div class="theme-grid" id="themeGrid"></div>
+      <div class="row">
+        <label>自定义配色</label>
+        <div class="ctl colors">
+          <label>主色<input type="color" id="cAccent1"></label>
+          <label>辅色<input type="color" id="cAccent2"></label>
+          <label>背景<input type="color" id="cBg"></label>
+        </div>
+      </div>
+      <div class="row">
+        <label>背景图片</label>
+        <div class="ctl bgimg">
+          <span class="img-thumb" id="imgThumb" title="当前背景图"></span>
+          <button class="btn" id="btnPickImg">选择图片…</button>
+          <button class="btn danger" id="btnClearImg" hidden>移除</button>
+          <input type="file" id="imgFile" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+        </div>
+      </div>
+      <div class="row">
+        <label for="opacity">不透明度</label>
+        <div class="ctl"><input id="opacity" type="range" min="20" max="100" step="1"><span class="val" id="opacityVal">95%</span></div>
+      </div>
+      <div class="hint" id="imgHint">
+        背景图会作为「自定义」皮肤的底图（自动压缩到 1280px）· 每个皮肤会分别记住自己的不透明度<br>
+        调整配色或上传图片会自动切到「自定义」皮肤 · 背景选浅色时文字会自动变成深色
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>🎛 行为</h2>
+      <div class="row">
+        <label for="clickThrough">鼠标穿透</label>
+        <div class="ctl"><label class="switch"><input id="clickThrough" type="checkbox"><span></span></label></div>
+      </div>
+      <div class="row">
+        <label for="alwaysOnTop">始终置顶</label>
+        <div class="ctl"><label class="switch"><input id="alwaysOnTop" type="checkbox"><span></span></label></div>
+      </div>
+      <div class="row">
+        <label for="launchAtLogin">开机自动启动</label>
+        <div class="ctl"><label class="switch"><input id="launchAtLogin" type="checkbox"><span></span></label></div>
+      </div>
+      <div class="hint">
+        快捷键：Ctrl+Alt+N 切换鼠标穿透 · Ctrl+Alt+H 显示 / 隐藏悬浮窗<br>
+        悬浮窗底部也可以直接换肤、拖滑杆调透明度（或 Ctrl+滚轮）· 开机自启需打包成 exe 后生效
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2>🧰 其他</h2>
+      <div class="foot">
+        <button class="btn" id="btnOpenDir">打开配置目录</button>
+        <button class="btn danger" id="btnReset" title="清空所有设置，恢复初始状态">重置</button>
+        <button class="btn danger" id="btnQuit">退出应用</button>
+        <span class="save-hint" id="saveHint">改动会自动保存</span>
+      </div>
+      <div class="hint">
+        「重置」会清空工资、小目标、皮肤等全部数据，恢复到初始状态
+      </div>
+    </section>
+  </main>
+
+  <script src="themes.js"></script>
+  <script src="calc.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

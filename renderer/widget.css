@@ -1,0 +1,458 @@
+/* 牛马鼓励器 —— 悬浮窗样式（颜色全部走 theme 变量，支持换肤） */
+html, body {
+  background: transparent;
+  overflow: hidden;
+}
+
+body { padding: 12px 12px 14px; }
+
+#card {
+  -webkit-app-region: drag;
+  user-select: none;
+  position: relative;
+  padding: 13px 16px 11px;
+  border-radius: 18px;
+  border: 1px solid var(--card-border);
+  background:
+    radial-gradient(120% 90% at 0% 0%,
+      color-mix(in srgb, var(--accent-1) 11%, transparent),
+      color-mix(in srgb, var(--accent-1) 0%, transparent) 55%),
+    linear-gradient(165deg, var(--veil), rgba(255, 255, 255, 0) 45%),
+    color-mix(in srgb, var(--bg) 90%, transparent);
+  box-shadow: var(--shadow);
+  animation: rise 0.4s ease-out;
+  transition: border-color 0.3s;
+}
+
+/* 自定义皮肤上传了背景图：图片铺底，压一层背景色罩保证文字可读 */
+#card.has-img {
+  background:
+    linear-gradient(165deg,
+      color-mix(in srgb, var(--bg) 45%, transparent),
+      color-mix(in srgb, var(--bg) 78%, transparent)),
+    var(--bg-image) center / cover no-repeat,
+    var(--bg);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- 顶栏 ---------- */
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 22px;
+  margin-bottom: 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.brand .sep { opacity: 0.5; }
+
+.badge {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  color: var(--accent-1);
+  background: color-mix(in srgb, var(--accent-1) 15%, transparent);
+}
+
+.badge[hidden] { display: none; }
+
+.actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+#card:hover .actions { opacity: 1; }
+
+.actions button {
+  -webkit-app-region: no-drag;
+  width: 24px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.actions button:hover { background: var(--panel-strong); color: var(--text); }
+.actions button.danger:hover { background: rgba(255, 90, 90, 0.22); color: #ff8f8f; }
+
+/* 鼠标穿透：开启时才画斜杠（关掉时斜杠必须消失） */
+.actions button .slash { visibility: hidden; }
+.actions button.on { color: var(--accent-1); background: color-mix(in srgb, var(--accent-1) 15%, transparent); }
+.actions button.on .slash { visibility: visible; }
+
+.actions svg {
+  width: 13px;
+  height: 13px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- 金额 ---------- */
+.label {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.amount-box {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 2px 0 3px;
+  transform-origin: left center;
+}
+
+.cur {
+  font-size: 22px;
+  font-weight: 600;
+  background: linear-gradient(180deg, var(--accent-1), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+#amount {
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: 0.3px;
+  font-variant-numeric: tabular-nums;
+  color: var(--num);
+  transition: color 0.35s ease;
+}
+
+.amount-box.pop { animation: pop 0.5s ease; }
+.amount-box.pop #amount { color: var(--ok); }
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.sub {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+  min-height: 19px;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.sub .sepdot { opacity: 0.55; }
+
+/* 月薪：点击就地编辑 */
+.edit-salary {
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  padding: 1px 5px;
+  margin: -1px -5px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.edit-salary:hover {
+  color: var(--accent-1);
+  background: color-mix(in srgb, var(--accent-1) 12%, transparent);
+}
+
+.salary-input {
+  -webkit-app-region: no-drag;
+  width: 76px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 11.5px;
+  color: var(--text);
+  background: var(--panel-strong);
+  border: 1px solid color-mix(in srgb, var(--accent-1) 65%, transparent);
+  border-radius: 6px;
+  outline: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.salary-input::-webkit-inner-spin-button,
+.salary-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---------- 进度 ---------- */
+.progress {
+  height: 5px;
+  margin: 11px 0 9px;
+  border-radius: 99px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+#bar {
+  height: 100%;
+  width: 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  transition: width 0.3s linear;
+}
+
+#bar.full { background: linear-gradient(90deg, var(--green-1), var(--green-2)); }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  font-size: 11px;
+  line-height: 1;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--text) 80%, transparent);
+  background: var(--panel);
+  border: 1px solid var(--card-border);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.chip[hidden] { display: none; }
+
+.chip.warn {
+  color: #f0a045;
+  background: rgba(255, 170, 60, 0.12);
+  border-color: rgba(255, 170, 60, 0.22);
+}
+
+.divider {
+  height: 1px;
+  margin: 12px -16px 9px;
+  background: var(--line);
+}
+
+.divider.tight { margin: 6px -16px 9px; }
+
+/* ---------- 小目标 ---------- */
+.wt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+
+.link {
+  -webkit-app-region: no-drag;
+  border: 0;
+  background: none;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: var(--text-faint);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.link:hover {
+  color: var(--accent-1);
+  background: color-mix(in srgb, var(--accent-1) 10%, transparent);
+}
+
+.wishes {
+  max-height: 236px;
+  overflow-y: auto;
+  margin-right: -6px;
+  padding-right: 6px;
+}
+
+.wishes::-webkit-scrollbar { width: 4px; }
+.wishes::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--text) 16%, transparent);
+  border-radius: 4px;
+}
+
+.wish { padding: 6px 0 7px; }
+
+.wrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+}
+
+.wemoji { width: 18px; text-align: center; flex: none; }
+
+.wname {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--text) 92%, transparent);
+}
+
+.wstatus {
+  flex: none;
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--accent-2) 55%, var(--accent-1));
+  font-variant-numeric: tabular-nums;
+}
+
+.wtrack {
+  height: 4px;
+  margin-top: 6px;
+  border-radius: 99px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.wbar {
+  height: 100%;
+  width: 0;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+  transition: width 0.3s linear;
+}
+
+.wish.done .wstatus { color: var(--ok); }
+.wish.done .wbar { background: linear-gradient(90deg, var(--green-1), var(--green-2)); }
+
+.wish-empty {
+  -webkit-app-region: no-drag;
+  margin: 6px 0 4px;
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-dim);
+  border: 1px dashed color-mix(in srgb, var(--text) 18%, transparent);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.wish-empty:hover {
+  border-color: color-mix(in srgb, var(--accent-1) 60%, transparent);
+  color: var(--text);
+}
+
+.wish-empty b { color: var(--accent-1); font-weight: 600; }
+
+/* ---------- 语录 ---------- */
+.quote {
+  -webkit-app-region: no-drag;
+  font-size: 11.5px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.quote:hover { color: color-mix(in srgb, var(--text) 82%, transparent); }
+
+/* ---------- 底部快捷条：皮肤色点 + 透明度 ---------- */
+.qbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 9px;
+  height: 16px;
+  opacity: 0.72;
+  transition: opacity 0.18s ease;
+}
+
+#card:hover .qbar { opacity: 1; }
+
+.dots {
+  -webkit-app-region: no-drag;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.dot:hover { transform: scale(1.22); }
+
+.dot.active {
+  box-shadow:
+    0 0 0 1.5px color-mix(in srgb, var(--bg) 85%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--text) 62%, transparent);
+}
+
+.op {
+  -webkit-app-region: no-drag;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drop {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  stroke: var(--text-faint);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.op input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 92px;
+  height: 14px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.op input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--text) 20%, transparent);
+}
+
+.op input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--accent-1);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--bg) 70%, transparent);
+  transition: transform 0.15s;
+}
+
+.op input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.2); }

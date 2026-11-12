@@ -1,0 +1,11 @@
+# 依赖与打包产物
+node_modules/
+dist/
+
+# 截图自检产物
+shots/
+
+# 日志 / 系统杂物
+*.log
+Thumbs.db
+.DS_Store
